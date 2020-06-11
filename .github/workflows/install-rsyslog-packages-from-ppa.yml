@@ -26,10 +26,10 @@ name: Install rsyslog packages from PPA
 on:
   schedule:
     # Run every 4 hours
-    #- cron: '0 0,4,8,12,16,20 * * *'
+    - cron: "0 0,4,8,12,16,20 * * *"
 
     # Run once every 15 minutes (good for testing changes)
-    - cron: "*/15 * * * *"
+    #- cron: "*/15 * * * *"
 
 jobs:
   enable_scheduled_stable_ppa_and_install_packages:
@@ -88,20 +88,20 @@ jobs:
 
       - name: Install additional PPA-provided packages
         run: |
-          sudo apt install rsyslog-kafka
-          sudo apt install rsyslog-doc
-          sudo apt install rsyslog-mysql
-          sudo apt install rsyslog-pgsql
-          sudo apt install rsyslog-relp
-          sudo apt install rsyslog-elasticsearch
-          sudo apt install rsyslog-mmjsonparse
-          sudo apt install rsyslog-imptcp
-          sudo apt install rsyslog-mmnormalize
-          sudo apt install rsyslog-mmanon
-          sudo apt install rsyslog-mmfields
-          sudo apt install rsyslog-mmutf8fix
-          sudo apt install rsyslog-utils
-          sudo apt install rsyslog-mmrm1stspace
+          sudo apt-get install rsyslog-kafka
+          sudo apt-get install rsyslog-doc
+          sudo apt-get install rsyslog-mysql
+          sudo apt-get install rsyslog-pgsql
+          sudo apt-get install rsyslog-relp
+          sudo apt-get install rsyslog-elasticsearch
+          sudo apt-get install rsyslog-mmjsonparse
+          sudo apt-get install rsyslog-imptcp
+          sudo apt-get install rsyslog-mmnormalize
+          sudo apt-get install rsyslog-mmanon
+          sudo apt-get install rsyslog-mmfields
+          sudo apt-get install rsyslog-mmutf8fix
+          sudo apt-get install rsyslog-utils
+          sudo apt-get install rsyslog-mmrm1stspace
 
   enable_daily_stable_ppa_and_install_packages:
     name: Enable daily stable PPA and install packages
@@ -159,17 +159,17 @@ jobs:
 
       - name: Install additional PPA-provided packages
         run: |
-          sudo apt install rsyslog-kafka
-          sudo apt install rsyslog-doc
-          sudo apt install rsyslog-mysql
-          sudo apt install rsyslog-pgsql
-          sudo apt install rsyslog-relp
-          sudo apt install rsyslog-elasticsearch
-          sudo apt install rsyslog-mmjsonparse
-          sudo apt install rsyslog-imptcp
-          sudo apt install rsyslog-mmnormalize
-          sudo apt install rsyslog-mmanon
-          sudo apt install rsyslog-mmfields
-          sudo apt install rsyslog-mmutf8fix
-          sudo apt install rsyslog-utils
-          sudo apt install rsyslog-mmrm1stspace
+          sudo apt-get install rsyslog-kafka
+          sudo apt-get install rsyslog-doc
+          sudo apt-get install rsyslog-mysql
+          sudo apt-get install rsyslog-pgsql
+          sudo apt-get install rsyslog-relp
+          sudo apt-get install rsyslog-elasticsearch
+          sudo apt-get install rsyslog-mmjsonparse
+          sudo apt-get install rsyslog-imptcp
+          sudo apt-get install rsyslog-mmnormalize
+          sudo apt-get install rsyslog-mmanon
+          sudo apt-get install rsyslog-mmfields
+          sudo apt-get install rsyslog-mmutf8fix
+          sudo apt-get install rsyslog-utils
+          sudo apt-get install rsyslog-mmrm1stspace
