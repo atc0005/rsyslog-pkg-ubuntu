@@ -1,0 +1,175 @@
+# Copyright 2020 Rainer Gerhards and Others
+#
+# https://github.com/rsyslog/rsyslog-pkg-ubuntu
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# References:
+#
+# https://help.github.com/en/github/managing-subscriptions-and-notifications-on-github/configuring-notifications#github-actions-notification-options
+# https://github.com/settings/notifications
+# https://www.rsyslog.com/ubuntu-repository/
+
+---
+name: Install rsyslog packages from PPA
+
+on:
+  schedule:
+    # Run every 4 hours
+    #- cron: '0 0,4,8,12,16,20 * * *'
+
+    # Run once every 15 minutes (good for testing changes)
+    - cron: "*/15 * * * *"
+
+jobs:
+  enable_scheduled_stable_ppa_and_install_packages:
+    name: Enable scheduled stable PPA and install packages
+    runs-on: ${{ matrix.os }}
+    # Default: 360 minutes
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        # Explicitly list supported LTS versions
+        # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+        # Note: 'ubuntu-latest' currently maps to 'ubuntu-18.04'
+        #os: [ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
+
+        # TODO: Update this block
+        #
+        # These are likely to have the most stable installation experience
+        # right now, so going with these for initial testing
+        os: [ubuntu-16.04, ubuntu-18.04]
+
+    steps:
+      - name: Install stock Ubuntu-provided rsyslog
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rsyslog
+
+      - name: Display stock Ubuntu-provided rsyslog version
+        run: rsyslogd -v
+
+      - name: Search APT cache for rsyslog before adding PPA
+        run: apt-cache search rsyslog
+
+      - name: Show records for rsyslog-prefixed packages before adding PPA
+        run: apt-cache showpkg "rsyslog*"
+
+      - name: Add PPA
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes software-properties-common
+          sudo add-apt-repository --yes --update ppa:adiscon/v8-stable
+
+      - name: Search APT cache for rsyslog after adding PPA
+        run: apt-cache search rsyslog
+
+      - name: Show records for rsyslog-prefixed packages after adding PPA
+        run: apt-cache showpkg "rsyslog*"
+
+      - name: Install core rsyslog package
+        run: sudo apt-get install -y rsyslog
+
+      - name: Display PPA-provided rsyslog version
+        run: rsyslogd -v
+
+      - name: Restart rsyslog
+        run: sudo service rsyslog restart
+
+      - name: Install additional PPA-provided packages
+        run: |
+          sudo apt install rsyslog-kafka
+          sudo apt install rsyslog-doc
+          sudo apt install rsyslog-mysql
+          sudo apt install rsyslog-pgsql
+          sudo apt install rsyslog-relp
+          sudo apt install rsyslog-elasticsearch
+          sudo apt install rsyslog-mmjsonparse
+          sudo apt install rsyslog-imptcp
+          sudo apt install rsyslog-mmnormalize
+          sudo apt install rsyslog-mmanon
+          sudo apt install rsyslog-mmfields
+          sudo apt install rsyslog-mmutf8fix
+          sudo apt install rsyslog-utils
+          sudo apt install rsyslog-mmrm1stspace
+
+  enable_daily_stable_ppa_and_install_packages:
+    name: Enable daily stable PPA and install packages
+    runs-on: ${{ matrix.os }}
+    # Default: 360 minutes
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        # Explicitly list supported LTS versions
+        # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+        # Note: 'ubuntu-latest' currently maps to 'ubuntu-18.04'
+        #os: [ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
+
+        # TODO: Update this block
+        #
+        # These are likely to have the most stable installation experience
+        # right now, so going with these for initial testing
+        os: [ubuntu-16.04, ubuntu-18.04]
+
+    steps:
+      - name: Install stock Ubuntu-provided rsyslog
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rsyslog
+
+      - name: Display stock Ubuntu-provided rsyslog version
+        run: rsyslogd -v
+
+      - name: Search APT cache for rsyslog before adding PPA
+        run: apt-cache search rsyslog
+
+      - name: Show records for rsyslog-prefixed packages before adding PPA
+        run: apt-cache showpkg "rsyslog*"
+
+      - name: Add PPA
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes software-properties-common
+          sudo add-apt-repository --yes --update ppa:adiscon/v8-devel
+
+      - name: Search APT cache for rsyslog after adding PPA
+        run: apt-cache search rsyslog
+
+      - name: Show records for rsyslog-prefixed packages after adding PPA
+        run: apt-cache showpkg "rsyslog*"
+
+      - name: Install core rsyslog package
+        run: sudo apt-get install -y rsyslog
+
+      - name: Display PPA-provided rsyslog version
+        run: rsyslogd -v
+
+      - name: Restart rsyslog
+        run: sudo service rsyslog restart
+
+      - name: Install additional PPA-provided packages
+        run: |
+          sudo apt install rsyslog-kafka
+          sudo apt install rsyslog-doc
+          sudo apt install rsyslog-mysql
+          sudo apt install rsyslog-pgsql
+          sudo apt install rsyslog-relp
+          sudo apt install rsyslog-elasticsearch
+          sudo apt install rsyslog-mmjsonparse
+          sudo apt install rsyslog-imptcp
+          sudo apt install rsyslog-mmnormalize
+          sudo apt install rsyslog-mmanon
+          sudo apt install rsyslog-mmfields
+          sudo apt install rsyslog-mmutf8fix
+          sudo apt install rsyslog-utils
+          sudo apt install rsyslog-mmrm1stspace
