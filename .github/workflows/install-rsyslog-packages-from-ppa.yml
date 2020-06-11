@@ -26,7 +26,10 @@ name: Install rsyslog packages from PPA
 on:
   schedule:
     # Run every 4 hours
-    - cron: "0 0,4,8,12,16,20 * * *"
+    # - cron: "0 0,4,8,12,16,20 * * *"
+
+    # Run every hour (relaxed testing purposes)
+    - cron: "0 * * * *"
 
     # Run once every 15 minutes (good for testing changes)
     #- cron: "*/15 * * * *"
@@ -43,12 +46,7 @@ jobs:
         # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
         # Note: 'ubuntu-latest' currently maps to 'ubuntu-18.04'
         #os: [ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
-
-        # TODO: Update this block
-        #
-        # These are likely to have the most stable installation experience
-        # right now, so going with these for initial testing
-        os: [ubuntu-16.04, ubuntu-18.04]
+        os: [ubuntu-16.04, ubuntu-18.04, ubuntu-20.04]
 
     steps:
       - name: Install stock Ubuntu-provided rsyslog
@@ -131,6 +129,9 @@ jobs:
       - name: Install rsyslog-mmrm1stspace
         run: sudo apt-get install rsyslog-mmrm1stspace
 
+      - name: Display installed rsyslog packages
+        run: dpkg -l | grep -E 'rsyslog|adiscon'
+
   enable_daily_stable_ppa_and_install_packages:
     name: Enable daily stable PPA and install packages
     runs-on: ${{ matrix.os }}
@@ -142,12 +143,7 @@ jobs:
         # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
         # Note: 'ubuntu-latest' currently maps to 'ubuntu-18.04'
         #os: [ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
-
-        # TODO: Update this block
-        #
-        # These are likely to have the most stable installation experience
-        # right now, so going with these for initial testing
-        os: [ubuntu-16.04, ubuntu-18.04]
+        os: [ubuntu-16.04, ubuntu-18.04, ubuntu-20.04]
 
     steps:
       - name: Install stock Ubuntu-provided rsyslog
@@ -185,6 +181,9 @@ jobs:
       - name: Restart rsyslog
         run: sudo service rsyslog restart
 
+      - name: systemctl status output
+        run: sudo systemctl status rsyslog
+
       - name: Install additional PPA-provided packages
         run: |
           sudo apt-get install rsyslog-kafka
@@ -201,3 +200,6 @@ jobs:
           sudo apt-get install rsyslog-mmutf8fix
           sudo apt-get install rsyslog-utils
           sudo apt-get install rsyslog-mmrm1stspace
+
+      - name: Display installed rsyslog packages
+        run: dpkg -l | grep -E 'rsyslog|adiscon'
