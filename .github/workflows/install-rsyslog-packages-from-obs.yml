@@ -77,7 +77,7 @@ jobs:
 
       - name: Add OBS
         run: |
-          echo 'deb http://download.opensuse.org/repositories/home:/rgerhards/xUbuntu_$(lsb_release -r | cut -f 2)/ /' | sudo tee /etc/apt/sources.list.d/home:rgerhards.list
+          echo "deb http://download.opensuse.org/repositories/home:/rgerhards/xUbuntu_$(lsb_release -r | cut -f 2)/ /" | sudo tee /etc/apt/sources.list.d/home:rgerhards.list
           sudo wget -nv https://download.opensuse.org/repositories/home:rgerhards/xUbuntu_$(lsb_release -r | cut -f 2)/Release.key -O "/etc/apt/trusted.gpg.d/home:rgerhards.asc"
           sudo apt update
 
