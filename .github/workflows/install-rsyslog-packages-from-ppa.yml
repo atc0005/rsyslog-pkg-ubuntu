@@ -66,6 +66,9 @@ jobs:
       - name: Display stock Ubuntu-provided rsyslog version
         run: rsyslogd -v
 
+      - name: Show apt-cache policy rsyslog results before adding PPA
+        run: sudo apt-cache policy rsyslog
+
       - name: Search APT cache for rsyslog before adding PPA
         run: apt-cache search rsyslog
 
@@ -77,6 +80,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes software-properties-common
           sudo add-apt-repository --yes --update ppa:adiscon/v8-stable
+          sudo apt-get update
+
+      - name: Show apt-cache policy rsyslog results after adding PPA
+        run: sudo apt-cache policy rsyslog
 
       - name: Search APT cache for rsyslog after adding PPA
         run: apt-cache search rsyslog
@@ -171,6 +178,9 @@ jobs:
       - name: Display stock Ubuntu-provided rsyslog version
         run: rsyslogd -v
 
+      - name: Show apt-cache policy rsyslog results before adding PPA
+        run: sudo apt-cache policy rsyslog
+
       - name: Search APT cache for rsyslog before adding PPA
         run: apt-cache search rsyslog
 
@@ -182,6 +192,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes software-properties-common
           sudo add-apt-repository --yes --update ppa:adiscon/v8-devel
+
+      - name: Show apt-cache policy rsyslog results after adding PPA
+        run: sudo apt-cache policy rsyslog
 
       - name: Search APT cache for rsyslog after adding PPA
         run: apt-cache search rsyslog
