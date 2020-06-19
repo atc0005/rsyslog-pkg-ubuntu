@@ -25,37 +25,29 @@ name: Install rsyslog packages from OBS
 
 on:
   schedule:
-    # Run every 4 hours
-    - cron: "0 0,4,8,12,16,20 * * *"
-
-    # Run every hour (relaxed testing purposes)
-    #- cron: "0 * * * *"
-
-    # Run once every 15 minutes (good for testing changes)
-    #- cron: "*/15 * * * *"
+    # Run daily
+    - cron: "15 * * * *"
+      # Run every 4 hours
+      #- cron: "0 0,4,8,12,16,20 * * *"
+      #
+      # Run every hour (relaxed testing purposes)
+      #- cron: "0 * * * *"
+      #
+      # Run once every 15 minutes (good for testing changes)
+      #- cron: "*/15 * * * *"
 
 jobs:
   enable_obs_repo_and_install_packages:
     name: Enable OBS repo and install packages
     runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.experimental }}
     # Default: 360 minutes
     timeout-minutes: 10
     strategy:
-      # When set to true, cancel all in-progress jobs if any matrix job fails.
-      fail-fast: false
       matrix:
         # Explicitly list supported LTS versions
         # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
-        # Note: 'ubuntu-latest' currently maps to 'ubuntu-18.04'
-        #os: [ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
-        experimental: [false]
-        os: [ubuntu-16.04, ubuntu-18.04]
-        include:
-          # attempt to set Ubuntu 20.04 as experimental so it doesn't "fail
-          # the build" and stop all other job variations from running
-          - os: ubuntu-20.04
-            experimental: true
+        # Note: As of 2020-06 ubuntu-latest' maps to 'ubuntu-18.04', not ubuntu-20.04
+        os: [ubuntu-16.04, ubuntu-18.04, ubuntu-20.04]
 
     steps:
       - name: Install stock Ubuntu-provided rsyslog
